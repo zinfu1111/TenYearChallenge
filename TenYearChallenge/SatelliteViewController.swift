@@ -45,12 +45,29 @@ class SatelliteViewController: UITableViewController {
     }
     
     @IBAction func selectedDate(_ sender: UIDatePicker) {
+        
+        let curremtDateComponents = Calendar.current.dateComponents(in: .current, from: sender.date)
+        print(sender.date,curremtDateComponents.date,curremtDateComponents.year)
+        switch curremtDateComponents.year {
+        case 2016:
+            slider.value = (curremtDateComponents.month!%12 == 0) ? 12 : Float((curremtDateComponents.month!%12))
+            break
+        case 2017:
+            slider.value = (curremtDateComponents.month!%12 == 0) ? 24 : Float((curremtDateComponents.month!%12 + 12))
+            break
+        case 2018:
+            slider.value = (curremtDateComponents.month!%12 == 0) ? 36 : Float((curremtDateComponents.month!%12 + 24))
+            break
+        default:
+            break
+        }
+        print(slider.value)
+        
         setPhoto()
     }
     @IBAction func seekYearAction(_ sender: UISlider) {
         let addMonth = Int(sender.value)
         let curremtDateComponents = Calendar.current.dateComponents(in: .current, from: datePicker.minimumDate!)
-        
         
         if addMonth%12 == 1,addMonth/12 > 0 {
             selectedDateComponets.year = curremtDateComponents.year! + addMonth/12
@@ -63,7 +80,7 @@ class SatelliteViewController: UITableViewController {
         }
         
         datePicker.setDate(selectedDateComponets.date!, animated: true)
-        self.selectedDate(datePicker)
+        setPhoto()
     }
     
     @IBAction func autoSwitchAction(_ sender: UISwitch) {
